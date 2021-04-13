@@ -1,12 +1,8 @@
-from contextlib import closing
 import subprocess
-from audiotsm import phasevocoder
-from audiotsm.io.wav import WavReader, WavWriter
 from scipy.io import wavfile
 import numpy as np
 import re
 import math
-from shutil import copyfile, rmtree
 import os
 import argparse
 import xml.etree.ElementTree as ET
@@ -31,10 +27,7 @@ parser.add_argument('--frame_margin', type=float, default=1, help="some silent f
 parser.add_argument('--sample_rate', type=float, default=44100, help="sample rate of the input and output videos")
 parser.add_argument('--frame_rate', type=float, default=30, help="frame rate of the input and output videos. optional... I try to find it out myself, but it doesn't always work.")
 parser.add_argument('--frame_quality', type=int, default=3, help="quality of frames to be extracted from input video. 1 is highest, 31 is lowest, 3 is the default.")
-
 args = parser.parse_args()
-
-
 
 frameRate = args.frame_rate
 SAMPLE_RATE = args.sample_rate
@@ -52,13 +45,9 @@ if len(args.output_file) >= 1:
 else:
     OUTPUT_FILE = inputToOutputFilename(INPUT_FILE)
 
-AUDIO_FADE_ENVELOPE_SIZE = 400 # smooth out transitiion's audio by quickly fading in/out (arbitrary magic number whatever)
-
 command = "ffmpeg -i "+INPUT_FILE+" -ab 160k -ac 2 -ar "+str(SAMPLE_RATE)+" -vn ./jumpcutter_audio.wav"
 
 subprocess.call(command, shell=True)
-
-
 
 sampleRate, audioData = wavfile.read("./jumpcutter_audio.wav")
 audioSampleCount = audioData.shape[0]
