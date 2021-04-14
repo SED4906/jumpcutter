@@ -108,9 +108,11 @@ for chunk in chunks:
     outputPointer = chunk[0]
     endPointer = chunk[1]
     if (chunk[2]):
-        ET.SubElement(splay,'entry', attrib={'producer':'producer0', 'in': str(chunk[0]/SOUNDED_SPEED), 'out': str(chunk[1]/SOUNDED_SPEED)})
+        if(abs(chunk[0]/SOUNDED_SPEED - chunk[1]/SOUNDED_SPEED) > 1):
+            ET.SubElement(splay,'entry', attrib={'producer':'producer0', 'in': str(chunk[0]/SOUNDED_SPEED), 'out': str(chunk[1]/SOUNDED_SPEED)})
     else:
-        ET.SubElement(splay,'entry', attrib={'producer':'producer1', 'in': str(chunk[0]/SILENT_SPEED), 'out': str(chunk[1]/SILENT_SPEED)})
+        if(abs(chunk[0]/SILENT_SPEED - chunk[1]/SILENT_SPEED) > 1):
+            ET.SubElement(splay,'entry', attrib={'producer':'producer1', 'in': str(chunk[0]/SILENT_SPEED), 'out': str(chunk[1]/SILENT_SPEED)})
 
 ET.ElementTree(etree).write('jumpcutter.mlt')
 
