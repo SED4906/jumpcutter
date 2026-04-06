@@ -116,5 +116,5 @@ for chunk in chunks:
 
 ET.ElementTree(etree).write('jumpcutter.mlt')
 
-command = ".\melt jumpcutter.mlt -consumer avformat:"+OUTPUT_FILE
+command = "melt jumpcutter.mlt -consumer avformat:"+OUTPUT_FILE
 subprocess.call(command, shell=True)
